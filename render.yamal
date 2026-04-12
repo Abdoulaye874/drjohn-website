@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: drjohn-website
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app

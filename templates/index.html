@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. John Results | Preview Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="hero">
+        <nav class="navbar">
+            <div class="brand">Dr. John Results</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#why-us">Why Us</a></li>
+                <li><a href="#contact">Talk to Us</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-content">
+            <p class="eyebrow">Luxury Herbal Wellness</p>
+            <h1>A Cleaner, More Modern Way to Present the Brand</h1>
+            <p class="hero-text">
+                Premium wellness support inspired by experience, care, and a mission to help people feel their best.
+            </p>
+            <div class="hero-buttons">
+                <a href="#products" class="btn">View Featured Products</a>
+                <a href="#contact" class="btn btn-outline">Book a Consultation</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="about" class="section">
+            <div class="section-header">
+                <p class="eyebrow dark">About the Founder</p>
+                <h2>Built Around Story, Trust, and Personal Experience</h2>
+            </div>
+            <div class="two-column">
+                <div>
+                    <p>
+                        This preview site introduces Dr. John in a more polished and focused way.
+                        Instead of large blocks of text, it highlights the founder’s background,
+                        mission, and message in a format that feels easier to read and more professional.
+                    </p>
+                </div>
+                <div class="quote-card">
+                    <p class="quote">
+                        “A brand like this should feel personal, premium, and easy for visitors to understand.”
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="section alt">
+            <div class="section-header">
+                <p class="eyebrow dark">Featured Products</p>
+                <h2>A Simpler Product Showcase</h2>
+            </div>
+
+            <div class="card-grid">
+                <div class="product-card">
+                    <div class="product-image">Product Image</div>
+                    <h3>Pain Relief</h3>
+                    <p>Daily herbal wellness support in a more modern product layout.</p>
+                    <span class="price">$40.00</span>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">Product Image</div>
+                    <h3>Blood Pressure Health</h3>
+                    <p>Presented with a cleaner structure and premium feel.</p>
+                    <span class="price">$35.00</span>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">Product Image</div>
+                    <h3>Infinity</h3>
+                    <p>A featured product card that helps the page feel more organized.</p>
+                    <span class="price">$89.99</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-us" class="section">
+            <div class="section-header">
+                <p class="eyebrow dark">Why This Version Works</p>
+                <h2>Less Complicated. Easier to Trust. Better First Impression.</h2>
+            </div>
+
+            <div class="card-grid">
+                <div class="info-card">
+                    <h3>Cleaner Layout</h3>
+                    <p>Important information is grouped into clear sections instead of one long page of text.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Modern Branding</h3>
+                    <p>The design feels more current while still keeping the founder-centered identity.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Stronger Calls to Action</h3>
+                    <p>Visitors can quickly understand what to do next: browse products or reach out.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section contact-section">
+            <div class="section-header center">
+                <p class="eyebrow dark">Talk to Us</p>
+                <h2>Request More Information</h2>
+                <p class="contact-subtext">
+                    This demo keeps the contact experience simple and professional.
+                </p>
+            </div>
+
+            {% if message %}
+                <p class="success-message">{{ message }}</p>
+            {% endif %}
+
+            <form class="contact-form" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="tel" name="phone" placeholder="Your Phone Number" required>
+                <textarea name="message" rows="6" placeholder="How can we help you?" required></textarea>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

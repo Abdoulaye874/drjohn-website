@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Books/Audios | DRJOHN RESULTS{% endblock %}
+
+{% block content %}
+
+<section class="books-audios-page">
+    <div class="container">
+        <div class="books-grid">
+            {% for slug, book in books.items() %}
+            <article class="book-item">
+                <form class="book-buy-form" action="{{ url_for('add_to_cart', product_name=slug) }}">
+                    <button class="graphic-book" type="submit" aria-label="Add {{ book.name }} to cart">
+                        <span class="graphic-book-spine" aria-hidden="true"></span>
+                        <span class="graphic-book-pages" aria-hidden="true"></span>
+                        <img src="{{ url_for('static', filename=book.image) }}" alt="{{ book.name }} book cover">
+                    </button>
+                </form>
+                <div class="book-item-copy">
+                    <span class="product-category">Graphic Novel</span>
+                    <h1>{{ book.name }}</h1>
+                    <p>{{ book.description }}</p>
+                    <p class="book-price">{{ book.price }}</p>
+                    <a href="{{ url_for('add_to_cart', product_name=slug) }}" class="btn btn-small book-cart-btn">Add to Cart</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

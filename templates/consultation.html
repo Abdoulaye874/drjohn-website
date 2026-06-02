@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="consultation-page">
+    <div class="section-header center">
+        <p class="eyebrow dark">Personalized Wellness</p>
+        <h1>Book a Consultation</h1>
+        <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="form-alerts">
+                {% for category, message in messages %}
+                    <p class="form-alert {{ category }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form class="consultation-form" method="POST" action="{{ url_for('consultation') }}">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="tel" name="phone" placeholder="Your Phone Number">
+        <textarea name="message" placeholder="How can we help you?" rows="6" required></textarea>
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</section>
+
+{% endblock %}

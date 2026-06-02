@@ -1,135 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. John Results | Preview Demo</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header class="hero">
-        <nav class="navbar">
-            <div class="brand">Dr. John Results</div>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#why-us">Why Us</a></li>
-                <li><a href="#contact">Talk to Us</a></li>
-            </ul>
-        </nav>
+{% extends "base.html" %}
 
-        <div class="hero-content">
-            <p class="eyebrow">Luxury Herbal Wellness</p>
-            <h1>A Cleaner, More Modern Way to Present the Brand</h1>
-            <p class="hero-text">
-                Premium wellness support inspired by experience, care, and a mission to help people feel their best.
-            </p>
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-copy-panel">
+            <p class="hero-kicker">Luxury Organic Herbal Recipes</p>
+            <h1>"I know what I know, I know for sure"</h1>
+            <p class="hero-attribution">- DrJohn</p>
             <div class="hero-buttons">
-                <a href="#products" class="btn">View Featured Products</a>
-                <a href="#contact" class="btn btn-outline">Book a Consultation</a>
+                <a href="{{ url_for('shop') }}" class="btn">Shop Now</a>
+                <a href="{{ url_for('consultation') }}" class="btn btn-outline">Book Consultation</a>
             </div>
-        </div>
-    </header>
-
-    <main>
-        <section id="about" class="section">
-            <div class="section-header">
-                <p class="eyebrow dark">About the Founder</p>
-                <h2>Built Around Story, Trust, and Personal Experience</h2>
-            </div>
-            <div class="two-column">
-                <div>
-                    <p>
-                        This preview site introduces Dr. John in a more polished and focused way.
-                        Instead of large blocks of text, it highlights the founder’s background,
-                        mission, and message in a format that feels easier to read and more professional.
-                    </p>
-                </div>
-                <div class="quote-card">
-                    <p class="quote">
-                        “A brand like this should feel personal, premium, and easy for visitors to understand.”
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="products" class="section alt">
-            <div class="section-header">
-                <p class="eyebrow dark">Featured Products</p>
-                <h2>A Simpler Product Showcase</h2>
-            </div>
-
-            <div class="card-grid">
-                <div class="product-card">
-                    <div class="product-image">Product Image</div>
-                    <h3>Pain Relief</h3>
-                    <p>Daily herbal wellness support in a more modern product layout.</p>
-                    <span class="price">$40.00</span>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">Product Image</div>
-                    <h3>Blood Pressure Health</h3>
-                    <p>Presented with a cleaner structure and premium feel.</p>
-                    <span class="price">$35.00</span>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">Product Image</div>
-                    <h3>Infinity</h3>
-                    <p>A featured product card that helps the page feel more organized.</p>
-                    <span class="price">$89.99</span>
-                </div>
-            </div>
-        </section>
-
-        <section id="why-us" class="section">
-    <div class="section-header">
-        <p class="eyebrow dark">Why Choose Us</p>
-        <h2>Built on Experience, Research, and Real Results</h2>
-    </div>
-
-    <div class="card-grid">
-        <div class="info-card">
-            <h3>Proven Experience</h3>
-            <p>
-                Our approach is backed by years of hands-on experience helping individuals improve their overall wellness through natural solutions.
-            </p>
+            <ul class="hero-points">
+                <li>54+ organic herbal compounds</li>
+                <li>Limited free private consultations</li>
+                <li>Hand-mixed limited batches</li>
+            </ul>
         </div>
 
-        <div class="info-card">
-            <h3>Research-Driven Formulas</h3>
-            <p>
-                Every product is created with careful attention to ingredients, combining traditional knowledge with modern research to support better outcomes.
-            </p>
-        </div>
-
-        <div class="info-card">
-            <h3>Trusted by Real People</h3>
-            <p>
-                Our focus is on delivering results people can feel, building trust through consistency, quality, and a commitment to long-term wellness.
-            </p>
+        <div class="hero-showcase" aria-label="DRJOHN RESULTS featured herbal products">
+            <div class="hero-gold-medallion">
+                <img src="{{ url_for('static', filename='images/drjohn-logo-transparent.png') }}" alt="">
+            </div>
+            <figure class="hero-image-frame">
+                <img src="{{ url_for('static', filename='images/hero image.png') }}" alt="DRJOHN RESULTS herbal supplements with fresh fruits, vegetables, nuts, and herbs">
+            </figure>
         </div>
     </div>
 </section>
 
-        <section id="contact" class="section contact-section">
-            <div class="section-header center">
-                <p class="eyebrow dark">Talk to Us</p>
-                <h2>Request More Information</h2>
-                <p class="contact-subtext">
-                    This demo keeps the contact experience simple and professional.
-                </p>
-            </div>
+<section class="featured-products">
+    <div class="container">
+        <div class="section-header center">
+            <p class="eyebrow dark">Shop Favorites</p>
+            <h2>Featured Products</h2>
+        </div>
 
-            <form class="contact-form" action="https://formspree.io/f/xyklgjrz" method="POST">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <input type="tel" name="phone" placeholder="Your Phone Number" required>
-                <textarea name="message" rows="6" placeholder="How can we help you?" required></textarea>
-                <button type="submit" class="btn">Send Message</button>
-            </form>
-        </section>
-    </main>
-</body>
-</html>
+        <div class="product-grid">
+            {% for slug, product in featured_products.items() %}
+            <article class="product-card">
+                <a href="{{ url_for('product', product_name=slug) }}" class="product-image-link">
+                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" class="product-photo">
+                </a>
+                <div class="product-card-body">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <div class="product-card-footer">
+                        <span class="price">{{ product.price }}</span>
+                        <a href="{{ url_for('product', product_name=slug) }}" class="btn btn-small">View Product</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="why-us">
+    <div class="container">
+        <div class="section-header center">
+            <p class="eyebrow dark">Why Choose Us</p>
+            <h2>Natural wellness with personal care</h2>
+        </div>
+
+        <div class="why-grid">
+            <article class="why-card">
+                <h3>Proprietary Herbal Blends</h3>
+                <p>Dr. John personally uses his organic luxury herbal recipes, made with more than 54 organic herbal compounds.</p>
+            </article>
+            <article class="why-card">
+                <h3>Faith-Inspired Foundation</h3>
+                <p>These herbal recipes are rooted in faith, lived experience, and a commitment to helping the body return to balance.</p>
+            </article>
+            <article class="why-card">
+                <h3>Private Personal Guidance</h3>
+                <p>Through a free private health interview and consultation, Dr. John helps each person find a more personal path forward.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="consultation-cta">
+    <div class="stories-band">
+        <div class="container stories-shell">
+            <p class="eyebrow">Customer Stories</p>
+            <h2>What customers are saying</h2>
+            <p>Hear from customers who have experienced the benefits of DRJOHN RESULTS.</p>
+            <a href="{{ url_for('testimonials') }}" class="btn stories-btn">View Testimonials</a>
+        </div>
+    </div>
+
+    <div class="container guidance-panel">
+        <div>
+            <p class="eyebrow dark">Personal Support</p>
+            <h2>Need Guidance?</h2>
+            <p>
+                Book a consultation and let us help you find the right wellness
+                support for your needs.
+            </p>
+        </div>
+        <a href="{{ url_for('consultation') }}" class="btn guidance-btn">Book a Consultation</a>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-box">
+        <h1>Login</h1>
+        <p class="auth-intro">Sign in to keep your cart and account activity connected to you.</p>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="{{ entered_username or '' }}" autocomplete="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="current-password" required>
+
+            <button type="submit">Log In</button>
+        </form>
+
+        <p class="auth-switch">
+            Forgot your password?
+            <a href="{{ url_for('forgot_password') }}">Reset it</a>
+        </p>
+
+        <p class="auth-switch">
+            Need an account?
+            <a href="{{ url_for('create_account') }}">Create one</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

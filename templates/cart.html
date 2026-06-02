@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="cart-page">
+    <div class="container">
+        <h1>Your Cart</h1>
+        <p>Your selected items will appear here.</p>
+
+        <div class="cart-items">
+            {% if cart_items %}
+                {% for item in cart_items %}
+                <div class="cart-item">
+                    {% if item.product.image_pending %}
+                    <span class="cart-product-photo cart-product-placeholder">{{ item.product.name }}</span>
+                    {% else %}
+                    <img src="{{ url_for('static', filename=item.product.image) }}" alt="{{ item.product.name }}" class="cart-product-photo">
+                    {% endif %}
+                    <div class="cart-item-details">
+                        <h3>{{ item.product.name }}</h3>
+                        <p>Quantity: {{ item.quantity }}</p>
+                        <div class="cart-controls" aria-label="Update quantity for {{ item.product.name }}">
+                            <form method="POST" action="{{ url_for('decrease_cart', product_name=item.slug) }}">
+                                <button type="submit" class="icon-button" aria-label="Decrease quantity">-</button>
+                            </form>
+                            <span>{{ item.quantity }}</span>
+                            <form method="POST" action="{{ url_for('increase_cart', product_name=item.slug) }}">
+                                <button type="submit" class="icon-button" aria-label="Increase quantity">+</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('remove_from_cart', product_name=item.slug) }}">
+                                <button type="submit" class="remove-button">Remove</button>
+                            </form>
+                        </div>
+                        <p>Price: {{ item.product.price }}</p>
+                        <p><strong>Item Total: ${{ "%.2f"|format(item.item_total) }}</strong></p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Your cart is empty.</p>
+            {% endif %}
+        </div>
+
+        <div class="cart-summary">
+            <h2>Order Summary</h2>
+            <p>Subtotal: ${{ "%.2f"|format(subtotal) }}</p>
+            <p>Shipping: ${{ "%.2f"|format(shipping) }}</p>
+            <p><strong>Total: ${{ "%.2f"|format(total) }}</strong></p>
+
+            <div class="cart-summary-actions">
+                <a href="/checkout" class="btn">Proceed to Checkout</a>
+                {% if cart_items %}
+                    <form method="POST" action="{{ url_for('clear_cart') }}">
+                        <button type="submit" class="link-button">Clear Cart</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

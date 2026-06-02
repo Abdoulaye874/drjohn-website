@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="confirmation-page">
+    <div class="confirmation-box">
+        <p class="eyebrow dark">Order Received</p>
+        <h1>Thank You{% if order.customer.full_name %}, {{ order.customer.full_name }}{% endif %}</h1>
+        <p>Your order has been received. We will contact you with next steps and any details needed to complete your order.</p>
+
+        <div class="checkout-summary confirmation-summary">
+            <h2>Order Summary</h2>
+
+            {% for item in order["items"] %}
+                <div class="checkout-summary-item">
+                    <span>{{ item.product.name }} x {{ item.quantity }}</span>
+                    <strong>${{ "%.2f"|format(item.item_total) }}</strong>
+                </div>
+            {% endfor %}
+
+            <div class="checkout-totals">
+                <p><span>Subtotal</span><strong>${{ "%.2f"|format(order.subtotal) }}</strong></p>
+                <p><span>Shipping</span><strong>${{ "%.2f"|format(order.shipping) }}</strong></p>
+                <p class="checkout-total"><span>Total</span><strong>${{ "%.2f"|format(order.total) }}</strong></p>
+            </div>
+        </div>
+
+        <a href="{{ url_for('shop') }}" class="btn">Continue Shopping</a>
+    </div>
+</section>
+
+{% endblock %}

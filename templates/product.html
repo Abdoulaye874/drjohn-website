@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="product-page">
+    <div class="product-sheet">
+        <header class="product-titlebar">
+            <span class="product-titlebar-inner">
+                <strong>DRJOHN RESULTS&copy;</strong>
+                <span>Luxury Organic Herbal-Recipe Supplements</span>
+            </span>
+        </header>
+
+        {% set bottle_src = product.bottle_image or product.image %}
+        <div class="product-container">
+            <div class="product-media">
+                <div class="product-media-stage">
+                    {% if product.image_pending %}
+                    <div class="product-detail-placeholder">
+                        <span>{{ product.name }}</span>
+                    </div>
+                    {% else %}
+                    <img src="{{ url_for('static', filename=bottle_src) }}"
+                         alt="{{ product.name }}" class="product-detail-photo">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="product-info">
+                <h1 class="product-title">{{ product.name }}</h1>
+
+                <p class="product-description">{{ product.description }}</p>
+
+                <ul class="product-benefits">
+                    {% for benefit in product.benefits %}
+                        <li>{{ benefit }}</li>
+                    {% endfor %}
+                </ul>
+
+                <p class="product-price">{{ product.price }}</p>
+
+                <a href="{{ url_for('add_to_cart', product_name=product_slug) }}" class="btn product-add-btn">Add to Cart</a>
+            </div>
+        </div>
+
+        <footer class="product-foot-note">
+            (I have more than 75-<u>hand-blended</u> herbal-recipes - <u>Limited supply</u> - First come <u>first served</u>)
+        </footer>
+    </div>
+</section>
+
+{% endblock %}

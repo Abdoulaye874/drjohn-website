@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="checkout-page">
+    <div class="container">
+        <h1>Checkout</h1>
+        <p>Complete your order details below.</p>
+
+        <div class="checkout-summary">
+            <h2>Order Summary</h2>
+
+            {% if cart_items %}
+                {% for item in cart_items %}
+                    <div class="checkout-summary-item">
+                        <span>{{ item.product.name }} x {{ item.quantity }}</span>
+                        <strong>${{ "%.2f"|format(item.item_total) }}</strong>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Your cart is empty.</p>
+            {% endif %}
+
+            <div class="checkout-totals">
+                <p><span>Subtotal</span><strong>${{ "%.2f"|format(subtotal) }}</strong></p>
+                <p><span>Shipping</span><strong>${{ "%.2f"|format(shipping) }}</strong></p>
+                <p class="checkout-total"><span>Total</span><strong>${{ "%.2f"|format(total) }}</strong></p>
+            </div>
+        </div>
+
+        <form class="checkout-form" method="POST" action="{{ url_for('checkout') }}">
+            <input type="text" name="full_name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="text" name="address" placeholder="Shipping Address" required>
+            <input type="text" name="city" placeholder="City" required>
+            <input type="text" name="state" placeholder="State" required>
+            <input type="text" name="zip" placeholder="ZIP Code" required>
+
+            <h2>Payment Information</h2>
+
+            <input type="text" name="card_name" placeholder="Name on Card" required>
+            <input type="text" name="card_number" placeholder="Card Number" maxlength="19" required>
+
+            <div class="payment-row">
+                <input type="text" name="exp_date" placeholder="MM/YY" maxlength="5" required>
+                <input type="text" name="cvv" placeholder="CVV" maxlength="4" required>
+            </div>
+
+            <input type="text" name="billing_zip" placeholder="Billing ZIP Code" required>
+
+            <button type="submit" class="btn">Place Order</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

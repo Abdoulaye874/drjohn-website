@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Shop | DRJOHN RESULTS{% endblock %}
+
+{% block content %}
+
+<section class="shop-header">
+    <div class="container">
+        <p class="eyebrow dark">Organic Herbal Recipes</p>
+        <h1>Shop Products</h1>
+        <p>Browse DRJOHN RESULTS herbal wellness support.</p>
+    </div>
+</section>
+
+<section class="shop-products">
+    <div class="container">
+        <div class="category-filter" aria-label="Filter products by category">
+            <a class="category-filter-button {% if selected_category == 'all' %}active{% endif %}" href="{{ url_for('shop') }}">All</a>
+            {% for category in categories %}
+            <a class="category-filter-button {% if selected_category == category %}active{% endif %}" href="{{ url_for('shop', category=category) }}">{{ category }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="product-grid">
+            {% for slug, product in products.items() %}
+            <article class="product-card">
+                <a href="{{ url_for('product', product_name=slug) }}" class="product-image-link">
+                    {% if product.image_pending %}
+                    <span class="product-photo-placeholder">
+                        <span>{{ product.name }}</span>
+                    </span>
+                    {% else %}
+                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" class="product-photo">
+                    {% endif %}
+                </a>
+                <div class="product-card-body">
+                    <span class="product-category">{{ product.category }}</span>
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <div class="product-card-footer">
+                        <span class="price">{{ product.price }}</span>
+                        <a href="{{ url_for('product', product_name=slug) }}" class="btn btn-small">View Product</a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

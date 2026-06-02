@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DRJOHN RESULTS{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('home') }}" class="brand-mark">
+                <img class="brand-emblem" src="{{ url_for('static', filename='images/drjohn-logo-transparent.png') }}" alt="DRJOHN RESULTS logo">
+                <span class="brand-copy">
+                    <strong>DRJOHN RESULTS</strong>
+                    <span>
+                        Luxury Organic Herbal Recipes
+                    </span>
+                </span>
+            </a>
+        </div>
+
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-toggle" type="button" aria-haspopup="true">
+                    <span>Shop</span>
+                    <span class="nav-dropdown-caret" aria-hidden="true"></span>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="{{ url_for('shop') }}">Herbs</a>
+                    <a href="{{ url_for('book') }}">Books/Audios</a>
+                </div>
+            </div>
+            <a href="{{ url_for('testimonials') }}">Testimonials</a>
+            <a href="{{ url_for('consultation') }}">Consultation</a>
+            <a href="{{ url_for('cart') }}" class="cart-link" aria-label="View shopping cart" title="View shopping cart">
+                <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="9" cy="21" r="1.5"></circle>
+                    <circle cx="18" cy="21" r="1.5"></circle>
+                    <path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6"></path>
+                </svg>
+                <span class="cart-count">{{ cart_count }}</span>
+            </a>
+
+            {% if current_user %}
+                <div class="account-status">
+                    <span class="account-status-label">Signed in as</span>
+                    <strong>{{ current_user }}</strong>
+                </div>
+                <a href="{{ url_for('logout') }}" class="account-link" aria-label="Log out">
+                    <span class="account-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path>
+                        </svg>
+                    </span>
+                    <span>Log Out</span>
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="account-link" aria-label="Log in">
+                    <span class="account-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path>
+                        </svg>
+                    </span>
+                    <span>Log In</span>
+                </a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section class="flash-stack" aria-live="polite">
+                    {% for category, message in messages %}
+                        <div class="flash-toast form-alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand-block">
+                <div>
+                    <h2>DRJOHN RESULTS</h2>
+                    <p>Organic herbal wellness support shaped by experience, faith, and personal care.</p>
+                </div>
+            </div>
+            <div class="footer-meta">
+                <p><strong>Email:</strong> resultshealthsupplements@gmail.com</p>
+                <p><strong>Phone:</strong> 1-205-603-4523</p>
+            </div>
+            <p class="footer-copy">&copy; DRJOHN RESULTS</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", function () {
+            const toasts = document.querySelectorAll(".flash-toast");
+
+            toasts.forEach(function (toast, index) {
+                window.setTimeout(function () {
+                    toast.classList.add("flash-toast-visible");
+                }, 100 + (index * 120));
+
+                window.setTimeout(function () {
+                    toast.classList.add("flash-toast-hide");
+                }, 2000 + (index * 120));
+
+                window.setTimeout(function () {
+                    toast.remove();
+                }, 2500 + (index * 120));
+            });
+        });
+    </script>
+</body>
+</html>

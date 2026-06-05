@@ -6,22 +6,32 @@
 
 <section class="books-audios-page">
     <div class="container">
+        <div class="section-header center books-header">
+            <img class="books-title-image" src="{{ url_for('static', filename='images/book title transparent.png') }}" alt="Afro-True-Ism Adult Luxury Comic Books">
+            <p>Explore the DRJOHN RESULTS graphic novel collection.</p>
+        </div>
+
         <div class="books-grid">
             {% for slug, book in books.items() %}
             <article class="book-item">
-                <form class="book-buy-form" action="{{ url_for('add_to_cart', product_name=slug) }}">
-                    <button class="graphic-book" type="submit" aria-label="Add {{ book.name }} to cart">
-                        <span class="graphic-book-spine" aria-hidden="true"></span>
-                        <span class="graphic-book-pages" aria-hidden="true"></span>
-                        <img src="{{ url_for('static', filename=book.image) }}" alt="{{ book.name }} book cover">
-                    </button>
-                </form>
+                {% if book.image_pending %}
+                <div class="graphic-book graphic-book-placeholder" aria-label="{{ book.name }} cover coming soon">
+                    <span class="graphic-book-spine" aria-hidden="true"></span>
+                    <span class="graphic-book-pages" aria-hidden="true"></span>
+                    <span>{{ book.name }}</span>
+                </div>
+                {% else %}
+                <div class="graphic-book" aria-label="{{ book.name }} cover">
+                    <span class="graphic-book-spine" aria-hidden="true"></span>
+                    <span class="graphic-book-pages" aria-hidden="true"></span>
+                    <img src="{{ url_for('static', filename=book.image) }}" alt="{{ book.name }} book cover">
+                </div>
+                {% endif %}
                 <div class="book-item-copy">
                     <span class="product-category">Graphic Novel</span>
                     <h1>{{ book.name }}</h1>
                     <p>{{ book.description }}</p>
-                    <p class="book-price">{{ book.price }}</p>
-                    <a href="{{ url_for('add_to_cart', product_name=slug) }}" class="btn btn-small book-cart-btn">Add to Cart</a>
+                    <p class="book-coming-soon">Coming Soon</p>
                 </div>
             </article>
             {% endfor %}

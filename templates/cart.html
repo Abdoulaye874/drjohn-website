@@ -14,7 +14,7 @@
                     {% if item.product.image_pending %}
                     <span class="cart-product-photo cart-product-placeholder">{{ item.product.name }}</span>
                     {% else %}
-                    <img src="{{ url_for('static', filename=item.product.image) }}" alt="{{ item.product.name }}" class="cart-product-photo">
+                    <img src="{{ url_for('static', filename=item.product.image) }}" alt="{{ item.product.name }}" class="cart-product-photo {% if item.product.photo_blend %}product-photo-blend{% endif %}">
                     {% endif %}
                     <div class="cart-item-details">
                         <h3>{{ item.product.name }}</h3>

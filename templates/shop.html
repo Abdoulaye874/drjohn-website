@@ -8,6 +8,14 @@
     <div class="container">
         <p class="eyebrow dark">Organic Herbal Recipes</p>
         <h1>Shop Products</h1>
+    </div>
+</section>
+
+<section class="shop-drjohn-feature" aria-label="Dr. John featured image">
+    <div class="container">
+        <figure class="shop-drjohn-stage">
+            <img src="{{ url_for('static', filename='images/Dr.john image 1.png') }}" alt="Dr. John holding fruits, herbs, gold, jewels, and money">
+        </figure>
         <p>Browse DRJOHN RESULTS herbal wellness support.</p>
     </div>
 </section>
@@ -30,7 +38,7 @@
                         <span>{{ product.name }}</span>
                     </span>
                     {% else %}
-                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" class="product-photo">
+                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" class="product-photo {% if product.photo_blend %}product-photo-blend{% endif %}">
                     {% endif %}
                 </a>
                 <div class="product-card-body">

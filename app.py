@@ -274,7 +274,8 @@ products = {
         ],
         "category": "Immune Support",
         "price": "$89.99",
-        "image_pending": True,
+        "image": "images/#7shis super human immune system.png",
+        "bottle_image": "images/#7shis super human immune system.png",
         "featured": True
     },
     "blood-pressure-health": {
@@ -301,7 +302,9 @@ products = {
         ],
         "category": "Energy & Focus",
         "price": "$89.99",
-        "image_pending": True,
+        "image": "images/infinity 2.png",
+        "bottle_image": "images/infinity 2.png",
+        "photo_blend": True,
         "featured": True
     },
     "circulation-health": {
@@ -314,7 +317,8 @@ products = {
         ],
         "category": "Circulation",
         "price": "$35.00",
-        "image_pending": True
+        "image": "images/circulation health.png",
+        "bottle_image": "images/circulation health.png"
     },
     "clarity-power-freedom": {
         "name": "Clarity Power & Freedom",
@@ -326,7 +330,9 @@ products = {
         ],
         "category": "Energy & Focus",
         "price": "$89.99",
-        "image_pending": True
+        "image": "images/Clarity Power Freedom.jpg",
+        "bottle_image": "images/Clarity Power Freedom.jpg",
+        "photo_blend": True
     },
     "infection-relief": {
         "name": "Infection Relief",
@@ -338,7 +344,9 @@ products = {
         ],
         "category": "Immune Support",
         "price": "$35.00",
-        "image_pending": True
+        "image": "images/Infection Relief.jpg",
+        "bottle_image": "images/Infection Relief.jpg",
+        "photo_blend": True
     },
     "sugar-regulator-health": {
         "name": "Sugar Regulator Health",
@@ -354,7 +362,7 @@ products = {
         "bottle_image": "product images/9f50fe20-1255-4922-98ee-12643efcdcc6 copy.webp"
     },
     "beyond-cancer-body-mind-health": {
-        "name": "Beyond Cancer Body-Mind Health",
+        "name": "Frances Irene Beyond Cancer",
         "description": "Herbal wellness support for body-mind balance and daily vitality.",
         "benefits": [
             "Supports whole-body wellness",
@@ -365,6 +373,7 @@ products = {
         "price": "$89.99",
         "image": "product images/e6678fb1-dc37-4941-bd3b-e7d8fc9c4f4c copy.webp",
         "bottle_image": "product images/e6678fb1-dc37-4941-bd3b-e7d8fc9c4f4c copy.webp",
+        "photo_blend": True,
         "featured": True
     },
     "medulla-health": {
@@ -377,7 +386,9 @@ products = {
         ],
         "category": "Whole Body",
         "price": "$49.99",
-        "image_pending": True
+        "image": "images/Medulla health.jpg",
+        "bottle_image": "images/Medulla health.jpg",
+        "photo_blend": True
     },
     "digestion-elimination-health": {
         "name": "Digestion Elimination Health",
@@ -403,7 +414,8 @@ products = {
         ],
         "category": "Digestion",
         "price": "$35.00",
-        "image_pending": True
+        "image": "images/Probiotic.png",
+        "bottle_image": "images/Probiotic.png"
     },
     "prostate-health": {
         "name": "Prostate Health",
@@ -427,7 +439,8 @@ products = {
         ],
         "category": "Sugar Balance",
         "price": "$35.00",
-        "image_pending": True
+        "image": "images/Diabetes relief healh.png",
+        "bottle_image": "images/Diabetes relief healh.png"
     },
     "kidney-health": {
         "name": "Kidney Health",
@@ -441,6 +454,20 @@ products = {
         "price": "$35.00",
         "image": "product images/b68727ed-e463-4369-83ec-f37c0c5b879d.png",
         "bottle_image": "product images/b68727ed-e463-4369-83ec-f37c0c5b879d.png"
+    },
+    "big-mack-mind-memory": {
+        "name": "Big-Mack Mind Memory",
+        "description": "Herbal support for memory, focus, and mental clarity.",
+        "benefits": [
+            "Supports memory and focus",
+            "Promotes mental clarity",
+            "Crafted with organic herbal ingredients"
+        ],
+        "category": "Energy & Focus",
+        "price": "$49.99",
+        "image": "images/Big Mack Mind Memory.png",
+        "bottle_image": "images/Big Mack Mind Memory.png",
+        "photo_blend": True
     },
     "stem-cell-growth": {
         "name": "Stem Cell Growth",
@@ -469,6 +496,90 @@ book_products = {
         "price": "$35.00",
         "image": "images/Screenshot 2026-06-01 213813.png",
         "book_file": "images/FRONT COVER 2026.pdf"
+    },
+    "spiritual-coma-book": {
+        "name": "The Spiritual-Coma",
+        "description": "Adult luxury comic book edition.",
+        "benefits": [
+            "Graphic novel-style DRJOHN RESULTS feature",
+            "Collector's edition presentation",
+            "Books/Audios catalog item"
+        ],
+        "category": "Books/Audios",
+        "price": "$35.00",
+        "image": "images/Screenshot 2026-06-04 143407.png"
+    },
+    "cancer-is-dead-book": {
+        "name": "Cancer is Dead",
+        "description": "Adult luxury comic book edition.",
+        "benefits": [
+            "Graphic novel-style DRJOHN RESULTS feature",
+            "Collector's edition presentation",
+            "Books/Audios catalog item"
+        ],
+        "category": "Books/Audios",
+        "price": "$35.00",
+        "image": "images/Screenshot 2026-06-04 143358.png"
+    },
+    "drjohn-results-book": {
+        "name": "DRJOHN RESULTS",
+        "description": "Adult luxury comic book edition.",
+        "benefits": [
+            "Graphic novel-style DRJOHN RESULTS feature",
+            "Collector's edition presentation",
+            "Books/Audios catalog item"
+        ],
+        "category": "Books/Audios",
+        "price": "$35.00",
+        "image_pending": True
+    },
+    "megalomania-diary-of-whiteness-book": {
+        "name": "The Megalomania Diary of Whiteness",
+        "description": "Adult luxury comic book edition.",
+        "benefits": [
+            "Graphic novel-style DRJOHN RESULTS feature",
+            "Collector's edition presentation",
+            "Books/Audios catalog item"
+        ],
+        "category": "Books/Audios",
+        "price": "$35.00",
+        "image_pending": True
+    },
+    "living-demonstration-book": {
+        "name": "Living Demonstration",
+        "description": "Adult luxury comic book edition.",
+        "benefits": [
+            "Graphic novel-style DRJOHN RESULTS feature",
+            "Collector's edition presentation",
+            "Books/Audios catalog item"
+        ],
+        "category": "Books/Audios",
+        "price": "$35.00",
+        "image": "images/Screenshot 2026-06-04 143326.png"
+    },
+    "live-like-an-orgasm-life-book": {
+        "name": "How To Live Like an Orgasm Life",
+        "description": "Adult luxury comic book edition.",
+        "benefits": [
+            "Graphic novel-style DRJOHN RESULTS feature",
+            "Collector's edition presentation",
+            "Books/Audios catalog item"
+        ],
+        "category": "Books/Audios",
+        "price": "$35.00",
+        "image": "images/Screenshot 2026-06-04 140956.png"
+    },
+    "cosmic-drjohn-results-book": {
+        "name": "DRJOHN RESULTS Cosmic Edition",
+        "description": "Adult luxury comic book edition.",
+        "benefits": [
+            "Graphic novel-style DRJOHN RESULTS feature",
+            "Collector's edition presentation",
+            "Books/Audios catalog item"
+        ],
+        "category": "Books/Audios",
+        "price": "$35.00",
+        "image": "images/Screenshot 2026-06-04 140913.png"
     }
 }
 

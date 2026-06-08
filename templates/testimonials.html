@@ -34,7 +34,12 @@
 
             <article class="testimonial-card">
                 <h3>Customer Testimonial</h3>
-                <p>Video testimonial coming soon.</p>
+                <div class="testimonial-media">
+                    <video controls preload="metadata">
+                        <source src="{{ url_for('static', filename='images/testimonial video 3.mp4') }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
             </article>
         </div>
     </div>

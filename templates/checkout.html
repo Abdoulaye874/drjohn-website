@@ -38,15 +38,17 @@
 
             <h2>Payment Information</h2>
 
-            <input type="text" name="card_name" placeholder="Name on Card" required>
-            <input type="text" name="card_number" placeholder="Card Number" maxlength="19" required>
-
-            <div class="payment-row">
-                <input type="text" name="exp_date" placeholder="MM/YY" maxlength="5" required>
-                <input type="text" name="cvv" placeholder="CVV" maxlength="4" required>
+            <div class="payment-notice">
+                <h3>PayPal Payment</h3>
+                {% if payment.is_configured %}
+                    <p>After placing your order, you will receive the PayPal payment details for the total shown above.</p>
+                    {% if payment.paypal_email %}
+                    <p><strong>PayPal:</strong> {{ payment.paypal_email }}</p>
+                    {% endif %}
+                {% else %}
+                    <p>PayPal payment details are not configured yet. The order can still be recorded while setup is completed.</p>
+                {% endif %}
             </div>
-
-            <input type="text" name="billing_zip" placeholder="Billing ZIP Code" required>
 
             <button type="submit" class="btn">Place Order</button>
         </form>

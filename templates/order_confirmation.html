@@ -25,6 +25,21 @@
             </div>
         </div>
 
+        <div class="payment-next-step">
+            <h2>Payment</h2>
+            {% if order.payment.is_configured %}
+                <p>Please complete your payment through PayPal for the total above.</p>
+                {% if order.payment.payment_url %}
+                    <a href="{{ order.payment.payment_url }}" class="btn" target="_blank" rel="noopener">Pay with PayPal</a>
+                {% endif %}
+                {% if order.payment.paypal_email %}
+                    <p class="payment-email"><strong>PayPal Email:</strong> {{ order.payment.paypal_email }}</p>
+                {% endif %}
+            {% else %}
+                <p>PayPal payment details are not configured yet. We will contact you to complete payment.</p>
+            {% endif %}
+        </div>
+
         <a href="{{ url_for('shop') }}" class="btn">Continue Shopping</a>
     </div>
 </section>

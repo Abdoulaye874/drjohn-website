@@ -969,72 +969,6 @@ h3,
     text-align: center;
 }
 
-.shop-drjohn-feature {
-    padding: 10px 0 22px;
-    text-align: center;
-}
-
-.shop-drjohn-feature .container {
-    display: grid;
-    justify-items: center;
-    gap: 18px;
-}
-
-.shop-drjohn-stage {
-    position: relative;
-    display: grid;
-    place-items: end center;
-    width: min(100%, 780px);
-    min-height: 520px;
-    margin: 0;
-    isolation: isolate;
-}
-
-.shop-drjohn-stage::before {
-    content: "";
-    position: absolute;
-    z-index: -2;
-    top: 3%;
-    left: 50%;
-    width: min(74vw, 520px);
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background:
-        radial-gradient(circle, rgba(255, 255, 255, 0.90) 0 16%, rgba(202, 160, 43, 0.34) 17% 47%, rgba(202, 160, 43, 0.12) 48% 64%, transparent 65%),
-        conic-gradient(from 210deg, rgba(202, 160, 43, 0.06), rgba(202, 160, 43, 0.64), rgba(255, 255, 255, 0.34), rgba(202, 160, 43, 0.12));
-    filter: drop-shadow(0 0 42px rgba(202, 160, 43, 0.36));
-    opacity: 0.98;
-    transform: translateX(-50%);
-}
-
-.shop-drjohn-stage::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    bottom: 10px;
-    left: 50%;
-    width: min(78vw, 640px);
-    height: 110px;
-    border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(44, 97, 253, 0.16), rgba(202, 160, 43, 0.16) 44%, transparent 70%);
-    transform: translateX(-50%);
-}
-
-.shop-drjohn-stage img {
-    display: block;
-    width: min(100%, 720px);
-    max-height: 620px;
-    object-fit: contain;
-    filter: drop-shadow(0 28px 28px rgba(22, 35, 55, 0.22));
-}
-
-.shop-drjohn-feature p {
-    max-width: 620px;
-    color: var(--muted);
-    font-size: 1.05rem;
-    font-weight: 800;
-}
-
 .shop-products {
     padding-top: 24px;
 }
@@ -1620,6 +1554,31 @@ h3,
     grid-template-columns: 1fr 1fr;
 }
 
+.payment-notice,
+.payment-next-step {
+    display: grid;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid rgba(202, 160, 43, 0.34);
+    border-radius: 12px;
+    background: rgba(255, 253, 246, 0.82);
+}
+
+.payment-notice h3,
+.payment-next-step h2 {
+    color: var(--blue-text);
+    font-size: 1.2rem;
+}
+
+.payment-notice p,
+.payment-next-step p {
+    color: var(--muted);
+}
+
+.payment-email {
+    font-size: 0.95rem;
+}
+
 .icon-button {
     width: 34px;
     height: 34px;
@@ -1657,12 +1616,12 @@ h3,
 
 .footer-brand-block p,
 .footer-meta p {
-    color: rgba(255, 255, 255, 0.90);
+    color: #fff;
     font-weight: 700;
 }
 
 .footer-meta strong {
-    color: var(--gold);
+    color: #fff;
 }
 
 .footer-copy {
@@ -1712,14 +1671,6 @@ h3,
     .guidance-panel {
         display: grid;
         text-align: left;
-    }
-
-    .shop-drjohn-stage {
-        min-height: 440px;
-    }
-
-    .shop-drjohn-stage img {
-        max-height: 520px;
     }
 
     .product-grid {
@@ -1863,35 +1814,6 @@ h3,
     .hero-gold-medallion img {
         width: 36px;
         height: 56px;
-    }
-
-    .shop-drjohn-feature {
-        padding: 0 0 10px;
-    }
-
-    .shop-drjohn-stage {
-        min-height: 330px;
-    }
-
-    .shop-drjohn-stage::before {
-        top: 4%;
-        width: min(96vw, 340px);
-    }
-
-    .shop-drjohn-stage::after {
-        width: min(92vw, 390px);
-        height: 74px;
-    }
-
-    .shop-drjohn-stage img {
-        width: min(100%, 390px);
-        max-height: 390px;
-    }
-
-    .shop-drjohn-feature p {
-        max-width: 330px;
-        font-size: 0.96rem;
-        line-height: 1.35;
     }
 
     .category-filter {

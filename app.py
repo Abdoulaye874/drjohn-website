@@ -167,6 +167,26 @@ def get_cart_summary():
     }
 
 
+def get_payment_settings(total=None):
+    paypal_email = get_setting("PAYPAL_EMAIL", "")
+    paypal_me_link = get_setting("PAYPAL_ME_LINK", "").rstrip("/")
+    paypal_payment_link = get_setting("PAYPAL_PAYMENT_LINK", "")
+    payment_url = paypal_payment_link
+
+    if not payment_url and paypal_me_link:
+        payment_url = paypal_me_link
+        if total:
+            payment_url = f"{paypal_me_link}/{total:.2f}"
+
+    return {
+        "paypal_email": paypal_email,
+        "paypal_me_link": paypal_me_link,
+        "paypal_payment_link": paypal_payment_link,
+        "payment_url": payment_url,
+        "is_configured": bool(paypal_email or payment_url)
+    }
+
+
 def send_consultation_email(name, email, phone, message):
     smtp_host = get_setting("SMTP_HOST", "smtp.gmail.com")
     smtp_port = int(get_setting("SMTP_PORT", "587"))
@@ -320,20 +340,6 @@ products = {
         "image": "images/circulation health.png",
         "bottle_image": "images/circulation health.png"
     },
-    "clarity-power-freedom": {
-        "name": "Clarity Power & Freedom",
-        "description": "Herbal support for clarity, confidence, and daily vitality.",
-        "benefits": [
-            "Supports mental clarity",
-            "Promotes daily energy",
-            "Supports whole-body wellness"
-        ],
-        "category": "Energy & Focus",
-        "price": "$89.99",
-        "image": "images/Clarity Power Freedom.jpg",
-        "bottle_image": "images/Clarity Power Freedom.jpg",
-        "photo_blend": True
-    },
     "infection-relief": {
         "name": "Infection Relief",
         "description": "Immune-focused herbal support for natural wellness routines.",
@@ -344,9 +350,8 @@ products = {
         ],
         "category": "Immune Support",
         "price": "$35.00",
-        "image": "images/Infection Relief.jpg",
-        "bottle_image": "images/Infection Relief.jpg",
-        "photo_blend": True
+        "image": "images/Infr.png",
+        "bottle_image": "images/Infr.png"
     },
     "sugar-regulator-health": {
         "name": "Sugar Regulator Health",
@@ -371,24 +376,9 @@ products = {
         ],
         "category": "Whole Body",
         "price": "$89.99",
-        "image": "product images/e6678fb1-dc37-4941-bd3b-e7d8fc9c4f4c copy.webp",
-        "bottle_image": "product images/e6678fb1-dc37-4941-bd3b-e7d8fc9c4f4c copy.webp",
-        "photo_blend": True,
+        "image": "images/Irene.png",
+        "bottle_image": "images/Irene.png",
         "featured": True
-    },
-    "medulla-health": {
-        "name": "Medulla Health",
-        "description": "Herbal support for mind-body balance and overall wellness.",
-        "benefits": [
-            "Supports nervous system wellness",
-            "Promotes body balance",
-            "Supports daily vitality"
-        ],
-        "category": "Whole Body",
-        "price": "$49.99",
-        "image": "images/Medulla health.jpg",
-        "bottle_image": "images/Medulla health.jpg",
-        "photo_blend": True
     },
     "digestion-elimination-health": {
         "name": "Digestion Elimination Health",
@@ -427,7 +417,8 @@ products = {
         ],
         "category": "Men's Health",
         "price": "$35.00",
-        "image_pending": True
+        "image": "images/ph.png",
+        "bottle_image": "images/ph.png"
     },
     "diabetes-relief-health": {
         "name": "Diabetes-Relief Health",
@@ -465,22 +456,9 @@ products = {
         ],
         "category": "Energy & Focus",
         "price": "$49.99",
-        "image": "images/Big Mack Mind Memory.png",
-        "bottle_image": "images/Big Mack Mind Memory.png",
-        "photo_blend": True
+        "image": "images/BMMM.png",
+        "bottle_image": "images/BMMM.png"
     },
-    "stem-cell-growth": {
-        "name": "Stem Cell Growth",
-        "description": "Herbal support for renewal, recovery, and everyday vitality.",
-        "benefits": [
-            "Supports natural renewal",
-            "Promotes body balance",
-            "Supports overall vitality"
-        ],
-        "category": "Whole Body",
-        "price": "$35.00",
-        "image_pending": True
-    }
 }
 
 book_products = {
@@ -720,9 +698,9 @@ def clear_cart():
 
 @app.route("/checkout", methods=["GET", "POST"])
 def checkout():
-    if request.method == "POST":
-        summary = get_cart_summary()
+    summary = get_cart_summary()
 
+    if request.method == "POST":
         if not summary["cart_items"]:
             return redirect(url_for("cart"))
 
@@ -731,16 +709,25 @@ def checkout():
             "subtotal": summary["subtotal"],
             "shipping": summary["shipping"],
             "total": summary["total"],
+            "payment": get_payment_settings(summary["total"]),
             "customer": {
                 "full_name": request.form.get("full_name", "").strip(),
-                "email": request.form.get("email", "").strip()
+                "email": request.form.get("email", "").strip(),
+                "address": request.form.get("address", "").strip(),
+                "city": request.form.get("city", "").strip(),
+                "state": request.form.get("state", "").strip(),
+                "zip": request.form.get("zip", "").strip()
             }
         }
         session["last_order"] = order
         session.pop("cart", None)
         return redirect(url_for("order_confirmation"))
 
-    return render_template("checkout.html", **get_cart_summary())
+    return render_template(
+        "checkout.html",
+        **summary,
+        payment=get_payment_settings(summary["total"])
+    )
 
 
 @app.route("/order-confirmation")

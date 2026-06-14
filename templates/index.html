@@ -7,7 +7,7 @@
         <div class="hero-copy-panel">
             <p class="hero-kicker">Luxury Organic Herbal Recipes</p>
             <h1>"I Know What I Know What I Know I Know For Sure"</h1>
-            <p class="hero-attribution">- DrJohn</p>
+            <p class="hero-attribution">- &copy;DrJohn</p>
             <div class="hero-buttons">
                 <a href="{{ url_for('shop') }}" class="btn">Shop Now</a>
                 <a href="{{ url_for('consultation') }}" class="btn btn-outline">Book Consultation</a>
@@ -20,11 +20,8 @@
         </div>
 
         <div class="hero-showcase" aria-label="DRJOHN RESULTS featured herbal products">
-            <div class="hero-gold-medallion">
-                <img src="{{ url_for('static', filename='images/drjohn-logo-transparent.png') }}" alt="">
-            </div>
-            <figure class="hero-image-frame">
-                <img src="{{ url_for('static', filename='images/hero image.png') }}" alt="DRJOHN RESULTS herbal supplements with fresh fruits, vegetables, nuts, and herbs">
+            <figure class="hero-image-frame hero-portrait-frame">
+                <img class="hero-portrait" src="{{ url_for('static', filename='images/Dr john frontpage.png') }}" alt="Dr. John standing in blue and gold attire">
             </figure>
         </div>
     </div>

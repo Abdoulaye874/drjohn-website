@@ -459,6 +459,51 @@ products = {
         "image": "images/BMMM.png",
         "bottle_image": "images/BMMM.png"
     },
+    "liver-cleanse": {
+        "name": "Liver Cleanse",
+        "description": "Herbal support for liver wellness, natural filtration, and daily vitality.",
+        "benefits": [
+            "Supports the body's natural filtration system",
+            "Promotes digestive and metabolic balance",
+            "Helps support energy, clarity, and overall wellness"
+        ],
+        "category": "Whole Body",
+        "price": "$35.00",
+        "image_pending": True,
+        "detail_intro": "How Do You Know When Your Liver Needs Cleansing?",
+        "detail_sections": [
+            {
+                "title": "Your Body's Primary Filter",
+                "paragraphs": [
+                    "Every day, your three-pound liver works tirelessly to help keep you alive and healthy. As the second-largest organ in the body after the skin, the liver performs hundreds of vital functions essential to your well-being.",
+                    "This remarkable organ acts as the body's primary filtration system, processing everything you eat and drink. It helps neutralize and eliminate toxins, supports healthy blood sugar levels, stores excess glucose as glycogen for future energy needs, and converts excess carbohydrates and proteins into forms the body can store and use later.",
+                    "Because the liver filters and processes so many substances, it can become overburdened by poor diet, environmental toxins, medications, alcohol, and chronic stress. When overwhelmed, its ability to function efficiently may decline, potentially affecting your overall health and vitality."
+                ]
+            },
+            {
+                "title": "Think About It",
+                "paragraphs": [
+                    "If you owned an automobile for 40 years and never changed the oil, never replaced the filter, and never performed routine maintenance, how well do you think that vehicle would run?",
+                    "Eventually, the engine would become clogged, performance would decline, and breakdowns would become inevitable.",
+                    "Your body works much the same way. The liver is the body's primary filter, processing everything you eat, drink, breathe, and absorb. Day after day, year after year, it works tirelessly to remove waste and toxins while helping maintain balance throughout the body.",
+                    "Just as a vehicle requires regular maintenance to perform at its best, your liver deserves support to function efficiently and help keep you healthy, energized, and thriving."
+                ]
+            }
+        ],
+        "support_signs": [
+            "Persistent fatigue or low energy levels",
+            "Dark circles under the eyes",
+            "A yellowish tint to the skin or eyes",
+            "Liver spots or changes in skin pigmentation",
+            "Discomfort, fullness, or tenderness on the right side of the abdomen",
+            "Regular or moderate alcohol consumption",
+            "Difficulty digesting fatty foods",
+            "Bloating or digestive discomfort",
+            "Brain fog or difficulty concentrating",
+            "Unexplained weight gain or difficulty losing weight"
+        ],
+        "detail_note": "These symptoms do not necessarily indicate liver disease, but they may suggest your liver is working harder than normal and could benefit from lifestyle changes and nutritional support."
+    },
 }
 
 book_products = {

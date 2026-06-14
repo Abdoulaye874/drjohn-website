@@ -532,6 +532,39 @@ h3,
     transform: scale(1.02);
 }
 
+.hero-portrait-frame {
+    display: grid;
+    place-items: end center;
+    width: min(100%, 440px);
+    min-height: 540px;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background:
+        radial-gradient(ellipse at 50% 86%, rgba(22, 35, 55, 0.22), transparent 32%),
+        radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.58), transparent 33%),
+        radial-gradient(circle at 50% 58%, rgba(202, 160, 43, 0.20), transparent 48%);
+    box-shadow: none;
+}
+
+.hero-portrait-frame::before,
+.hero-portrait-frame::after {
+    display: none;
+}
+
+.hero-portrait-frame .hero-portrait {
+    width: auto;
+    max-width: 92%;
+    height: min(58vw, 560px);
+    aspect-ratio: auto;
+    object-fit: contain;
+    object-position: center bottom;
+    filter:
+        drop-shadow(0 26px 24px rgba(22, 35, 55, 0.22))
+        drop-shadow(0 0 18px rgba(255, 253, 246, 0.58));
+    transform: none;
+}
+
 .eyebrow {
     margin-bottom: 12px;
     color: var(--blue-text);
@@ -767,6 +800,30 @@ h3,
     border-radius: 16px;
     font-size: clamp(2rem, 4vw, 3.2rem);
     line-height: 1.06;
+}
+
+.product-photo-placeholder span,
+.product-detail-placeholder span {
+    display: block;
+}
+
+.product-photo-placeholder span::after,
+.product-detail-placeholder span::after {
+    content: "Coming Soon";
+    display: block;
+    width: fit-content;
+    margin: 18px auto 0;
+    padding: 7px 12px;
+    border: 1px solid rgba(228, 35, 34, 0.22);
+    border-radius: 999px;
+    background: rgba(228, 35, 34, 0.08);
+    color: var(--red);
+    font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+    line-height: 1;
+    text-transform: uppercase;
 }
 
 .product-card-body {
@@ -1104,6 +1161,114 @@ h3,
     color: var(--muted);
     font-size: 0.95rem;
     text-align: center;
+}
+
+.product-education {
+    display: grid;
+    gap: 28px;
+    margin-top: 34px;
+}
+
+.product-education-header {
+    padding: 34px;
+    border: 1px solid rgba(202, 160, 43, 0.34);
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 94% 18%, rgba(202, 160, 43, 0.18), transparent 30%),
+        rgba(255, 253, 246, 0.82);
+    box-shadow: var(--shadow-soft);
+}
+
+.product-education-header h2 {
+    max-width: 780px;
+    font-size: clamp(2rem, 3.4vw, 3.2rem);
+}
+
+.product-education-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.product-education-panel,
+.product-signs-panel,
+.product-buy-strip {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.76);
+    box-shadow: var(--shadow-soft);
+}
+
+.product-education-panel {
+    padding: 28px;
+}
+
+.product-education-panel h3,
+.product-signs-panel h3 {
+    margin-bottom: 16px;
+    color: var(--blue-text);
+    font-size: 1.45rem;
+}
+
+.product-education-panel p,
+.product-signs-panel p {
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.product-education-panel p + p {
+    margin-top: 14px;
+}
+
+.product-signs-panel {
+    display: grid;
+    grid-template-columns: minmax(250px, 0.85fr) minmax(300px, 1.15fr);
+    gap: 28px;
+    padding: 30px;
+    align-items: start;
+}
+
+.product-signs-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    list-style: none;
+}
+
+.product-signs-list li {
+    position: relative;
+    min-height: 100%;
+    padding: 12px 14px 12px 34px;
+    border: 1px solid rgba(202, 160, 43, 0.24);
+    border-radius: 8px;
+    background: rgba(255, 253, 246, 0.76);
+    color: var(--ink);
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.product-signs-list li::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 18px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+}
+
+.product-buy-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 22px 26px;
+}
+
+.product-buy-strip strong {
+    color: var(--red);
+    font-size: 1.35rem;
 }
 
 .testimonials-page {
@@ -1664,7 +1829,9 @@ h3,
     .product-grid,
     .why-grid,
     .testimonials-grid,
-    .product-container {
+    .product-container,
+    .product-education-grid,
+    .product-signs-panel {
         grid-template-columns: 1fr;
     }
 
@@ -1698,6 +1865,15 @@ h3,
 
     .hero-image-frame {
         width: min(100%, 460px);
+    }
+
+    .hero-portrait-frame {
+        min-height: 500px;
+    }
+
+    .hero-portrait-frame .hero-portrait {
+        height: min(82vw, 520px);
+        max-width: 88%;
     }
 
     .hero-gold-medallion {
@@ -1804,6 +1980,16 @@ h3,
         aspect-ratio: 1.18 / 1;
     }
 
+    .hero-portrait-frame {
+        min-height: 410px;
+    }
+
+    .hero-portrait-frame .hero-portrait {
+        height: min(118vw, 460px);
+        max-width: 90%;
+        aspect-ratio: auto;
+    }
+
     .hero-gold-medallion {
         top: -8px;
         right: 8px;
@@ -1843,11 +2029,15 @@ h3,
 
     .product-grid,
     .why-grid,
-    .testimonials-grid {
+    .testimonials-grid,
+    .product-signs-list {
         grid-template-columns: 1fr;
     }
 
     .product-container,
+    .product-education-header,
+    .product-education-panel,
+    .product-signs-panel,
     .consultation-form,
     .checkout-form,
     .auth-box {
@@ -1856,6 +2046,7 @@ h3,
 
     .cart-item,
     .payment-row,
+    .product-buy-strip,
     .product-card-footer {
         display: grid;
         grid-template-columns: 1fr;

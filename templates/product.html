@@ -42,6 +42,48 @@
             </div>
         </div>
 
+        {% if product.detail_sections %}
+        <section class="product-education">
+            <div class="product-education-header">
+                <p class="eyebrow dark">{{ product.name }}</p>
+                <h2>{{ product.detail_intro }}</h2>
+            </div>
+
+            <div class="product-education-grid">
+                {% for section in product.detail_sections %}
+                <article class="product-education-panel">
+                    <h3>{{ section.title }}</h3>
+                    {% for paragraph in section.paragraphs %}
+                    <p>{{ paragraph }}</p>
+                    {% endfor %}
+                </article>
+                {% endfor %}
+            </div>
+
+            {% if product.support_signs %}
+            <article class="product-signs-panel">
+                <div>
+                    <p class="eyebrow dark">Signs Your Liver May Need Additional Support</p>
+                    <h3>Common wellness signals to pay attention to</h3>
+                    {% if product.detail_note %}
+                    <p>{{ product.detail_note }}</p>
+                    {% endif %}
+                </div>
+                <ul class="product-signs-list">
+                    {% for sign in product.support_signs %}
+                    <li>{{ sign }}</li>
+                    {% endfor %}
+                </ul>
+            </article>
+            {% endif %}
+
+            <div class="product-buy-strip">
+                <strong>Buy Today {{ product.price }}</strong>
+                <a href="{{ url_for('add_to_cart', product_name=product_slug) }}" class="btn">Add to Cart</a>
+            </div>
+        </section>
+        {% endif %}
+
         <footer class="product-foot-note">
             (I have more than 75-<u>hand-blended</u> herbal-recipes - <u>Limited supply</u> - First come <u>first served</u>)
         </footer>

@@ -29,7 +29,16 @@
                 </button>
                 <div class="nav-dropdown-menu">
                     <a href="{{ url_for('shop') }}">Herbs</a>
-                    <a href="{{ url_for('book') }}">Books/Audios</a>
+                    <div class="nav-submenu">
+                        <button class="nav-submenu-toggle" type="button" aria-haspopup="true">
+                            <span>Books/Audios</span>
+                            <span class="nav-submenu-caret" aria-hidden="true"></span>
+                        </button>
+                        <div class="nav-submenu-menu">
+                            <a href="{{ url_for('book_drjohn') }}">DRJOHN</a>
+                            <a href="{{ url_for('book_frances_irene') }}">Frances Irene</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <a href="{{ url_for('testimonials') }}">Testimonials</a>

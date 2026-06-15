@@ -469,7 +469,9 @@ products = {
         ],
         "category": "Whole Body",
         "price": "$35.00",
-        "image_pending": True,
+        "image": "images/Liver cleanse.JPG",
+        "bottle_image": "images/Liver cleanse.JPG",
+        "wide_photo": True,
         "detail_intro": "How Do You Know When Your Liver Needs Cleansing?",
         "detail_sections": [
             {
@@ -672,7 +674,17 @@ def testimonials():
 
 @app.route("/book")
 def book():
-    return render_template("book.html", books=book_products)
+    return redirect(url_for("book_drjohn"))
+
+
+@app.route("/books-audios/drjohn")
+def book_drjohn():
+    return render_template("book_drjohn.html")
+
+
+@app.route("/books-audios/frances-irene")
+def book_frances_irene():
+    return render_template("book_frances_irene.html")
 
 @app.route("/product/<product_name>")
 def product(product_name):

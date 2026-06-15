@@ -30,7 +30,7 @@
                         <span>{{ product.name }}</span>
                     </span>
                     {% else %}
-                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" class="product-photo {% if product.photo_blend %}product-photo-blend{% endif %}">
+                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" class="product-photo {% if product.photo_blend %}product-photo-blend{% endif %} {% if product.wide_photo %}product-photo-wide{% endif %}">
                     {% endif %}
                 </a>
                 <div class="product-card-body">

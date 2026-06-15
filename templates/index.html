@@ -38,7 +38,7 @@
             {% for slug, product in featured_products.items() %}
             <article class="product-card">
                 <a href="{{ url_for('product', product_name=slug) }}" class="product-image-link">
-                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" class="product-photo">
+                    <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" class="product-photo {% if product.photo_blend %}product-photo-blend{% endif %} {% if product.wide_photo %}product-photo-wide{% endif %}">
                 </a>
                 <div class="product-card-body">
                     <h3>{{ product.name }}</h3>

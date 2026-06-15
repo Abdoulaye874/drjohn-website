@@ -21,7 +21,7 @@
                     </div>
                     {% else %}
                     <img src="{{ url_for('static', filename=bottle_src) }}"
-                         alt="{{ product.name }}" class="product-detail-photo {% if product.photo_blend %}product-photo-blend{% endif %}">
+                         alt="{{ product.name }}" class="product-detail-photo {% if product.photo_blend %}product-photo-blend{% endif %} {% if product.wide_photo %}product-detail-photo-wide{% endif %}">
                     {% endif %}
                 </div>
             </div>

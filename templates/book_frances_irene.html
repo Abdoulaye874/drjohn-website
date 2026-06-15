@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Frances Irene Books/Audios | DRJOHN RESULTS{% endblock %}
+
+{% block content %}
+
+<section class="books-audios-page">
+    <div class="container">
+        <div class="section-header center books-header">
+            <p class="eyebrow dark">Books/Audios</p>
+            <h1>Frances Irene</h1>
+        </div>
+
+        <article class="book-media-feature">
+            <div class="book-item book-feature-cover">
+                <div class="graphic-book" aria-label="Cancer Is Dead book cover">
+                    <span class="graphic-book-spine" aria-hidden="true"></span>
+                    <span class="graphic-book-pages" aria-hidden="true"></span>
+                    <img src="{{ url_for('static', filename='images/Cancer is dead book.png') }}" alt="Cancer Is Dead book cover">
+                </div>
+                <div class="book-item-copy book-item-copy-compact">
+                    <span class="product-category">Book</span>
+                    <h1>Cancer Is Dead</h1>
+                    <p class="book-coming-soon">Coming Soon</p>
+                </div>
+            </div>
+
+            <div class="book-video-panel">
+                <span class="product-category">Video Preview</span>
+                <video controls preload="metadata">
+                    <source src="{{ url_for('static', filename='images/Cancer is dead.mp4') }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </article>
+    </div>
+</section>
+
+{% endblock %}

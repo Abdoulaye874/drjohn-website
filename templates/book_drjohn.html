@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}DRJOHN Books/Audios | DRJOHN RESULTS{% endblock %}
+
+{% block content %}
+
+<section class="books-audios-page">
+    <div class="container">
+        <div class="section-header center books-header">
+            <p class="eyebrow dark">Books/Audios</p>
+            <img class="books-title-image" src="{{ url_for('static', filename='images/book title transparent.png') }}" alt="Afro-True-Ism Adult Luxury Comic Books">
+            <p>Explore the &copy;DRJOHN RESULTS graphic novel collection.</p>
+        </div>
+
+        <article class="book-media-feature">
+            <div class="book-item book-feature-cover">
+                <div class="graphic-book" aria-label="108 Mind Book cover">
+                    <span class="graphic-book-spine" aria-hidden="true"></span>
+                    <span class="graphic-book-pages" aria-hidden="true"></span>
+                    <img src="{{ url_for('static', filename='images/108 mind book.png') }}" alt="108 Mind Book cover">
+                </div>
+                <div class="book-item-copy book-item-copy-compact">
+                    <span class="product-category">Book</span>
+                    <h1>108 Mind Book</h1>
+                    <p class="book-coming-soon">Coming Soon</p>
+                </div>
+            </div>
+
+            <div class="book-video-panel">
+                <span class="product-category">Video Preview</span>
+                <video controls preload="metadata">
+                    <source src="{{ url_for('static', filename='images/108 video.mp4') }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </article>
+
+        <div class="books-grid books-grid-featured books-grid-secondary">
+            <article class="book-item">
+                <div class="graphic-book" aria-label="Live Dead Book cover">
+                    <span class="graphic-book-spine" aria-hidden="true"></span>
+                    <span class="graphic-book-pages" aria-hidden="true"></span>
+                    <img src="{{ url_for('static', filename='images/live dead book.png') }}" alt="Live Dead Book cover">
+                </div>
+                <div class="book-item-copy book-item-copy-compact">
+                    <span class="product-category">Book</span>
+                    <h1>Live Dead Book</h1>
+                    <p class="book-coming-soon">Coming Soon</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

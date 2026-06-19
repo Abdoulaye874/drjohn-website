@@ -49,6 +49,15 @@
                 <h2>{{ product.detail_intro }}</h2>
             </div>
 
+            {% if product.video %}
+            <article class="product-video-panel">
+                <video controls preload="metadata">
+                    <source src="{{ url_for('static', filename=product.video) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </article>
+            {% endif %}
+
             <div class="product-education-grid">
                 {% for section in product.detail_sections %}
                 <article class="product-education-panel">

@@ -1258,11 +1258,25 @@ h3,
 
 .product-education-panel,
 .product-signs-panel,
+.product-video-panel,
 .product-buy-strip {
     border: 1px solid var(--line);
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.76);
     box-shadow: var(--shadow-soft);
+}
+
+.product-video-panel {
+    overflow: hidden;
+    width: min(100%, 760px);
+    margin-inline: auto;
+}
+
+.product-video-panel video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #111;
 }
 
 .product-education-panel {

@@ -27,16 +27,12 @@
 
         <div class="payment-next-step">
             <h2>Payment</h2>
-            {% if order.payment.is_configured %}
-                <p>Please complete your payment through PayPal for the total above.</p>
-                {% if order.payment.payment_url %}
-                    <a href="{{ order.payment.payment_url }}" class="btn" target="_blank" rel="noopener">Pay with PayPal</a>
-                {% endif %}
-                {% if order.payment.paypal_email %}
-                    <p class="payment-email"><strong>PayPal Email:</strong> {{ order.payment.paypal_email }}</p>
-                {% endif %}
+            {% if order.status == "paid" %}
+                <p>Your payment was completed securely through Stripe.</p>
+            {% elif order.payment.is_configured %}
+                <p>Your order is saved, but Stripe has not confirmed payment yet. If you already paid, this page may update after Stripe finishes processing.</p>
             {% else %}
-                <p>PayPal payment details are not configured yet. We will contact you to complete payment.</p>
+                <p>Stripe payment details are not configured yet. We will contact you to complete payment.</p>
             {% endif %}
         </div>
 

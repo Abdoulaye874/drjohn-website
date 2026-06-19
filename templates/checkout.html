@@ -39,18 +39,15 @@
             <h2>Payment Information</h2>
 
             <div class="payment-notice">
-                <h3>PayPal Payment</h3>
+                <h3>Secure Card Payment</h3>
                 {% if payment.is_configured %}
-                    <p>After placing your order, you will receive the PayPal payment details for the total shown above.</p>
-                    {% if payment.paypal_email %}
-                    <p><strong>PayPal:</strong> {{ payment.paypal_email }}</p>
-                    {% endif %}
+                    <p>After placing your order, you will be sent to Stripe's secure checkout page to pay by debit or credit card.</p>
                 {% else %}
-                    <p>PayPal payment details are not configured yet. The order can still be recorded while setup is completed.</p>
+                    <p>Stripe checkout is ready in the code. Add the Stripe keys before accepting real payments.</p>
                 {% endif %}
             </div>
 
-            <button type="submit" class="btn">Place Order</button>
+            <button type="submit" class="btn">Continue to Secure Payment</button>
         </form>
     </div>
 </section>

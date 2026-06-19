@@ -1,4 +1,5 @@
 import os
+import json
 import sqlite3
 import smtplib
 from email.message import EmailMessage
@@ -11,6 +12,12 @@ except ImportError:
 from flask import Flask, flash, render_template, redirect, request, url_for, session
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 from werkzeug.security import check_password_hash, generate_password_hash
+
+try:
+    import stripe
+except ImportError:
+    stripe = None
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "your_secret_key_here")
 SHIPPING_COST = 12.50
@@ -40,6 +47,27 @@ def init_users_table():
         }
         if "email" not in columns:
             connection.execute("ALTER TABLE users ADD COLUMN email TEXT")
+        connection.commit()
+
+
+def init_orders_table():
+    with get_db_connection() as connection:
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS orders (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                stripe_session_id TEXT UNIQUE,
+                stripe_payment_intent_id TEXT,
+                status TEXT NOT NULL DEFAULT 'pending',
+                customer_json TEXT NOT NULL,
+                items_json TEXT NOT NULL,
+                subtotal REAL NOT NULL,
+                shipping REAL NOT NULL,
+                total REAL NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+        )
         connection.commit()
 
 
@@ -101,6 +129,7 @@ def get_reset_serializer():
 
 
 init_users_table()
+init_orders_table()
 
 
 def clear_user_session_data():
@@ -138,6 +167,10 @@ def price_to_float(price):
     return float(price.replace("$", ""))
 
 
+def dollars_to_cents(amount):
+    return int(round(amount * 100))
+
+
 def get_cart_summary():
     cart = session.get("cart", {})
     cart_items = []
@@ -167,24 +200,184 @@ def get_cart_summary():
     }
 
 
-def get_payment_settings(total=None):
-    paypal_email = get_setting("PAYPAL_EMAIL", "")
-    paypal_me_link = get_setting("PAYPAL_ME_LINK", "").rstrip("/")
-    paypal_payment_link = get_setting("PAYPAL_PAYMENT_LINK", "")
-    payment_url = paypal_payment_link
+def get_stripe_secret_key():
+    return get_setting("STRIPE_SECRET_KEY", "")
 
-    if not payment_url and paypal_me_link:
-        payment_url = paypal_me_link
-        if total:
-            payment_url = f"{paypal_me_link}/{total:.2f}"
 
+def get_stripe_webhook_secret():
+    return get_setting("STRIPE_WEBHOOK_SECRET", "")
+
+
+def get_payment_settings():
+    stripe_secret_key = get_stripe_secret_key()
     return {
-        "paypal_email": paypal_email,
-        "paypal_me_link": paypal_me_link,
-        "paypal_payment_link": paypal_payment_link,
-        "payment_url": payment_url,
-        "is_configured": bool(paypal_email or payment_url)
+        "method": "stripe",
+        "is_configured": bool(stripe and stripe_secret_key),
+        "publishable_key": get_setting("STRIPE_PUBLISHABLE_KEY", "")
     }
+
+
+def get_base_url():
+    configured_url = get_setting("SITE_URL", "").rstrip("/")
+
+    if configured_url:
+        return configured_url
+
+    return request.url_root.rstrip("/")
+
+
+def serialize_order_items(cart_items):
+    return [
+        {
+            "slug": item["slug"],
+            "product": {
+                "name": item["product"]["name"],
+                "price": item["product"]["price"],
+                "image": item["product"].get("image"),
+                "image_pending": item["product"].get("image_pending", False),
+                "photo_blend": item["product"].get("photo_blend", False),
+                "wide_photo": item["product"].get("wide_photo", False),
+            },
+            "quantity": item["quantity"],
+            "item_total": item["item_total"],
+        }
+        for item in cart_items
+    ]
+
+
+def create_order(summary, customer):
+    items = serialize_order_items(summary["cart_items"])
+
+    with get_db_connection() as connection:
+        cursor = connection.execute(
+            """
+            INSERT INTO orders (
+                status, customer_json, items_json, subtotal, shipping, total
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                "pending",
+                json.dumps(customer),
+                json.dumps(items),
+                summary["subtotal"],
+                summary["shipping"],
+                summary["total"],
+            ),
+        )
+        connection.commit()
+        return cursor.lastrowid
+
+
+def update_order_payment(order_id, status, stripe_session_id=None, stripe_payment_intent_id=None):
+    with get_db_connection() as connection:
+        connection.execute(
+            """
+            UPDATE orders
+            SET status = ?,
+                stripe_session_id = COALESCE(?, stripe_session_id),
+                stripe_payment_intent_id = COALESCE(?, stripe_payment_intent_id)
+            WHERE id = ?
+            """,
+            (status, stripe_session_id, stripe_payment_intent_id, order_id),
+        )
+        connection.commit()
+
+
+def get_order_by_id(order_id):
+    with get_db_connection() as connection:
+        row = connection.execute(
+            """
+            SELECT id, stripe_session_id, stripe_payment_intent_id, status,
+                   customer_json, items_json, subtotal, shipping, total
+            FROM orders
+            WHERE id = ?
+            """,
+            (order_id,),
+        ).fetchone()
+
+    return format_order(row) if row else None
+
+
+def get_order_by_stripe_session(stripe_session_id):
+    with get_db_connection() as connection:
+        row = connection.execute(
+            """
+            SELECT id, stripe_session_id, stripe_payment_intent_id, status,
+                   customer_json, items_json, subtotal, shipping, total
+            FROM orders
+            WHERE stripe_session_id = ?
+            """,
+            (stripe_session_id,),
+        ).fetchone()
+
+    return format_order(row) if row else None
+
+
+def format_order(row):
+    return {
+        "id": row["id"],
+        "stripe_session_id": row["stripe_session_id"],
+        "stripe_payment_intent_id": row["stripe_payment_intent_id"],
+        "status": row["status"],
+        "customer": json.loads(row["customer_json"]),
+        "items": json.loads(row["items_json"]),
+        "subtotal": row["subtotal"],
+        "shipping": row["shipping"],
+        "total": row["total"],
+        "payment": get_payment_settings(),
+    }
+
+
+def create_stripe_checkout_session(order_id, summary, customer):
+    if stripe is None:
+        raise RuntimeError("The Stripe package is not installed.")
+
+    stripe.api_key = get_stripe_secret_key()
+
+    if not stripe.api_key:
+        raise RuntimeError("Stripe is not configured.")
+
+    line_items = []
+
+    for item in summary["cart_items"]:
+        line_items.append(
+            {
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {
+                        "name": item["product"]["name"],
+                    },
+                    "unit_amount": dollars_to_cents(price_to_float(item["product"]["price"])),
+                },
+                "quantity": item["quantity"],
+            }
+        )
+
+    if summary["shipping"]:
+        line_items.append(
+            {
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {
+                        "name": "Shipping",
+                    },
+                    "unit_amount": dollars_to_cents(summary["shipping"]),
+                },
+                "quantity": 1,
+            }
+        )
+
+    base_url = get_base_url()
+
+    return stripe.checkout.Session.create(
+        mode="payment",
+        line_items=line_items,
+        customer_email=customer["email"],
+        client_reference_id=str(order_id),
+        metadata={"order_id": str(order_id)},
+        success_url=f"{base_url}{url_for('order_confirmation')}?session_id={{CHECKOUT_SESSION_ID}}",
+        cancel_url=f"{base_url}{url_for('checkout')}?payment=cancelled",
+    )
 
 
 def send_consultation_email(name, email, phone, message):
@@ -471,6 +664,7 @@ products = {
         "price": "$35.00",
         "image": "images/Liver cleanse.JPG",
         "bottle_image": "images/Liver cleanse.JPG",
+        "video": "images/Liver cleanse video .mp4",
         "wide_photo": True,
         "detail_intro": "How Do You Know When Your Liver Needs Cleansing?",
         "detail_sections": [
@@ -757,44 +951,143 @@ def clear_cart():
 def checkout():
     summary = get_cart_summary()
 
+    if request.args.get("payment") == "cancelled":
+        flash("Your payment was cancelled. Your cart is still ready when you are.", "error")
+
     if request.method == "POST":
         if not summary["cart_items"]:
             return redirect(url_for("cart"))
 
-        order = {
-            "items": summary["cart_items"],
-            "subtotal": summary["subtotal"],
-            "shipping": summary["shipping"],
-            "total": summary["total"],
-            "payment": get_payment_settings(summary["total"]),
-            "customer": {
-                "full_name": request.form.get("full_name", "").strip(),
-                "email": request.form.get("email", "").strip(),
-                "address": request.form.get("address", "").strip(),
-                "city": request.form.get("city", "").strip(),
-                "state": request.form.get("state", "").strip(),
-                "zip": request.form.get("zip", "").strip()
-            }
+        customer = {
+            "full_name": request.form.get("full_name", "").strip(),
+            "email": request.form.get("email", "").strip(),
+            "address": request.form.get("address", "").strip(),
+            "city": request.form.get("city", "").strip(),
+            "state": request.form.get("state", "").strip(),
+            "zip": request.form.get("zip", "").strip()
         }
-        session["last_order"] = order
-        session.pop("cart", None)
-        return redirect(url_for("order_confirmation"))
+
+        if not all(customer.values()):
+            flash("Please complete every checkout field before continuing.", "error")
+            return render_template(
+                "checkout.html",
+                **summary,
+                payment=get_payment_settings()
+            )
+
+        payment = get_payment_settings()
+
+        if not payment["is_configured"]:
+            flash("Stripe checkout is ready in the code, but the Stripe keys still need to be added.", "error")
+            return render_template(
+                "checkout.html",
+                **summary,
+                payment=payment
+            )
+
+        order_id = create_order(summary, customer)
+
+        try:
+            checkout_session = create_stripe_checkout_session(order_id, summary, customer)
+        except Exception:
+            flash("Stripe could not start checkout yet. Please check the Stripe setup details.", "error")
+            return render_template(
+                "checkout.html",
+                **summary,
+                payment=payment
+            )
+
+        update_order_payment(order_id, "pending", checkout_session.id)
+        session["pending_order_id"] = order_id
+        return redirect(checkout_session.url, code=303)
 
     return render_template(
         "checkout.html",
         **summary,
-        payment=get_payment_settings(summary["total"])
+        payment=get_payment_settings()
     )
 
 
 @app.route("/order-confirmation")
 def order_confirmation():
-    order = session.get("last_order")
+    checkout_session_id = request.args.get("session_id")
+    order = None
+
+    if checkout_session_id:
+        order = get_order_by_stripe_session(checkout_session_id)
+
+        if order and stripe is not None and get_stripe_secret_key():
+            stripe.api_key = get_stripe_secret_key()
+
+            try:
+                checkout_session = stripe.checkout.Session.retrieve(checkout_session_id)
+            except Exception:
+                checkout_session = None
+
+            if checkout_session and checkout_session.payment_status == "paid":
+                update_order_payment(
+                    order["id"],
+                    "paid",
+                    checkout_session.id,
+                    checkout_session.payment_intent,
+                )
+                order = get_order_by_id(order["id"])
+                session.pop("cart", None)
+                session.pop("pending_order_id", None)
+
+    if not order:
+        pending_order_id = session.get("pending_order_id")
+        order = get_order_by_id(pending_order_id) if pending_order_id else session.get("last_order")
 
     if not order:
         return redirect(url_for("shop"))
 
     return render_template("order_confirmation.html", order=order)
+
+
+@app.route("/stripe-webhook", methods=["POST"])
+def stripe_webhook():
+    if stripe is None:
+        return "Stripe package is not installed.", 500
+
+    webhook_secret = get_stripe_webhook_secret()
+
+    if not webhook_secret:
+        return "Stripe webhook secret is not configured.", 500
+
+    payload = request.get_data()
+    signature = request.headers.get("Stripe-Signature", "")
+
+    try:
+        event = stripe.Webhook.construct_event(payload, signature, webhook_secret)
+    except ValueError:
+        return "Invalid payload.", 400
+    except Exception as error:
+        signature_error = getattr(getattr(stripe, "error", None), "SignatureVerificationError", None)
+        direct_signature_error = getattr(stripe, "SignatureVerificationError", None)
+
+        if (
+            signature_error and isinstance(error, signature_error)
+        ) or (
+            direct_signature_error and isinstance(error, direct_signature_error)
+        ):
+            return "Invalid signature.", 400
+
+        raise
+
+    if event["type"] == "checkout.session.completed":
+        checkout_session = event["data"]["object"]
+        order_id = checkout_session.get("metadata", {}).get("order_id")
+
+        if order_id and checkout_session.get("payment_status") == "paid":
+            update_order_payment(
+                int(order_id),
+                "paid",
+                checkout_session.get("id"),
+                checkout_session.get("payment_intent"),
+            )
+
+    return "", 200
 
 # ------------------ LOGIN SYSTEM ------------------
 
